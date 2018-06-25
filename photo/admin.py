@@ -5,7 +5,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.utils.translation import ungettext, ugettext_lazy as _
 
-from .models import Photo
+from .models import Photo, PhotoEffect, PhotoSize, Watermark
 
 MULTISITE = getattr(settings, 'PHOTOLOGUE_MULTISITE', False)
 
@@ -102,3 +102,50 @@ class PhotoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Photo, PhotoAdmin)
+
+class PhotoEffectAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description', 'color', 'brightness',
+                    'contrast', 'sharpness', 'filters', 'admin_sample')
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'description')
+        }),
+        ('Adjustments', {
+            'fields': ('color', 'brightness', 'contrast', 'sharpness')
+        }),
+        ('Filters', {
+            'fields': ('filters',)
+        }),
+        ('Reflection', {
+            'fields': ('reflection_size', 'reflection_strength', 'background_color')
+        }),
+        ('Transpose', {
+            'fields': ('transpose_method',)
+        }),
+    )
+
+admin.site.register(PhotoEffect, PhotoEffectAdmin)
+
+
+class PhotoSizeAdmin(admin.ModelAdmin):
+    list_display = ('name', 'width', 'height', 'crop', 'pre_cache', 'effect', 'increment_count')
+    fieldsets = (
+        (None, {
+            'fields': ('name', 'width', 'height', 'quality')
+        }),
+        ('Options', {
+            'fields': ('upscale', 'crop', 'pre_cache', 'increment_count')
+        }),
+        ('Enhancements', {
+            'fields': ('effect', 'watermark',)
+        }),
+    )
+
+admin.site.register(PhotoSize, PhotoSizeAdmin)
+
+
+class WatermarkAdmin(admin.ModelAdmin):
+    list_display = ('name', 'opacity', 'style')
+
+
+admin.site.register(Watermark, WatermarkAdmin)
