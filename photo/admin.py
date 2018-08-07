@@ -5,7 +5,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.utils.translation import ungettext, ugettext_lazy as _
 
-from .models import Photo, PhotoEffect, PhotoSize, Watermark
+from .models import Photo, PhotoEffect, PhotoSize, Watermark, Picture
 
 MULTISITE = getattr(settings, 'PHOTOLOGUE_MULTISITE', False)
 
@@ -149,3 +149,10 @@ class WatermarkAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Watermark, WatermarkAdmin)
+
+
+class PictureAdmin(admin.ModelAdmin):
+    list_display=('exif_image_width', 'exif_image_height', 'exif_model', 'exif_datetime', 'category', 'pub_date', 'modify_date')
+    readonly_fields=('exif_image_width', 'exif_image_height', 'exif_make', 'exif_model', 'exif_lens_make', 'exif_lens_model', 'exif_version', 'exif_subject_location', 'exif_datetime', 'exif_datetime_original', 'exif_datetime_digitized', 'sha1sum', 'category', 'pub_date', 'modify_date')
+
+admin.site.register(Picture, PictureAdmin)
