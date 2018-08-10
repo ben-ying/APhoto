@@ -745,6 +745,7 @@ class Picture(models.Model):
     exif_datetime_digitized = models.DateTimeField('datetime digitized', blank=True, null=True)
 
     # custom
+    name = models.CharField('name', max_length=60)
     sha1sum = models.CharField('sha1sum', max_length=50)
     category = models.IntegerField('category', default = 0)
     description = models.CharField('description', max_length=1024, blank=True, null=True)
