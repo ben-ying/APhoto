@@ -26,12 +26,18 @@ def detail(request):
     if not os.path.isdir:
         return HttpResponse("Dir not exists")
 
+    n = 0
     for root, directories, files in os.walk(directory):
+        total = len(files)
         for file_name in files:
+            n += 1
+            print("detail", "========Executing " + str(n) + "/" + str(total) + "========")
             file_path = os.path.join(root, file_name)
             if file_path.lower().endswith("jpg") \
                     or file_path.lower().endswith("jpeg"): 
                 saveImage(file_path, file_name)
+            else:
+                print("Error file format " + file_name.split(".")[-1])
 
     return HttpResponse("OK")
 
@@ -78,8 +84,12 @@ def saveImage(file_path, file_name):
                     datetime_digitized = v.split(" ")[0].replace(":", "-") \
                             + " " + v.split(" ")[1]
                     picture.exif_datetime_digitized = datetime_digitized
+            else:
+                print("Error key number")
         
         picture.save()
+    else:
+        print("File already Exists")
 
 
 def moveImage(file_name, file_path, img_datetime):
@@ -95,3 +105,4 @@ def moveImage(file_name, file_path, img_datetime):
 
     os.makedirs(img_dir, exist_ok=True)
     os.rename(file_path, os.path.join(img_dir, file_name))
+
